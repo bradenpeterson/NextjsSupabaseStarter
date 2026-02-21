@@ -1,0 +1,61 @@
+---
+description: Supabase client setup and SSR-safe usage with @supabase/ssr
+globs: lib/**/*.ts, **/middleware.ts, **/supabase/**/*.ts
+alwaysApply: false
+---
+
+# Supabase with Next.js (SSR)
+
+Use **`@supabase/ssr`** for all Supabase client creation. Never use the legacy `@supabase/supabase-js` singleton on the server.
+
+## Two distinct clients
+
+1. **Server** — Create a **new** client per request using `createServerClient` from `@supabase/ssr`, passing cookie get/set so the session is read and refreshed correctly.
+2. **Client (browser)** — Create a single browser client with `createBrowserClient` from `@supabase/ssr` for use in Client Components (singleton per app lifecycle is fine).
+
+Never use one global Supabase client for server-side code; it breaks request isolation and session handling.
+
+## Server helper (e.g. `lib/supabase/server.ts`)
+
+- Use Next.js `cookies()` (or Request/Response in middleware) to get/set cookies.
+- Call `createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { cookies: { get, set } })`.
+- In App Router, the cookie helpers typically wrap `cookies().get(name)` and `cookies().set(name, value, options)`. See Supabase docs for the exact API.
+
+Example pattern:
+
+```ts
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+
+export async function createClient() {
+  const cookieStore = await cookies()
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) { return cookieStore.get(name)?.value },
+        set(name, value, options) { cookieStore.set({ name, value, ...options }) },
+        remove(name, options) { cookieStore.set({ name, value: '', ...options }) },
+      },
+    }
+  )
+}
+```
+
+## Client helper (e.g. `lib/supabase/client.ts`)
+
+- Create the browser client once (e.g. lazy singleton or module-level) with `createBrowserClient(URL, ANON_KEY)`.
+- Use this only in Client Components. Do not import the server client in client code.
+
+## Middleware (token refresh)
+
+- Add **`middleware.ts`** at the **project root** (next to `app/`).
+- In middleware, create a server Supabase client using the request’s cookies (get/set on the `Response`), then call something like `supabase.auth.getUser()` so that the session is refreshed and cookies are updated.
+- Return the response so that the updated cookies are sent back. The assignment’s “proxy.ts” refers to this token-refresh behavior — implement it in Next.js middleware so cookies stay fresh across requests.
+
+## Environment variables
+
+- **`NEXT_PUBLIC_SUPABASE_URL`** — Supabase project URL.
+- **`NEXT_PUBLIC_SUPABASE_ANON_KEY`** — Supabase anon (public) key.
+- Do **not** commit `.env.local`. Document these variables in README and in the setup script so new clones know what to set.

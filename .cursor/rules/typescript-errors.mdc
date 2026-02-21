@@ -1,0 +1,33 @@
+---
+description: TypeScript and error handling standards
+globs: "**/*.ts, **/*.tsx"
+alwaysApply: false
+---
+
+# TypeScript and Error Handling
+
+## TypeScript
+
+- Use **strict** mode in `tsconfig.json` (or equivalent strict options).
+- **Type** all component props (interfaces or types), function parameters and return types, and event handlers (e.g. `React.ChangeEvent<HTMLInputElement>`).
+- Use **`interface`** or **`type`** for API responses, Supabase response shapes, and database row types (e.g. `Profile`) so the codebase stays type-safe.
+- Avoid **`any`**; if required, add a short comment explaining why and prefer narrowing or generics where possible.
+
+## Error handling
+
+- **Never** use an empty `catch` block. In every `catch`, either:
+  - **Log** the error (e.g. `console.error` or a logger) and/or
+  - **Rethrow** (possibly wrapped in a domain error) or
+  - **Return** a user-friendly message or result object so the caller can handle it.
+- **Auth errors:** Map Supabase auth error codes to clear messages (e.g. “Invalid email or password”, “This email is already registered”) and show them in the UI. Do not expose raw error objects to the user.
+- **Forms:** Validate input and surface **validation errors**; on server or DB errors, show a generic or specific message (e.g. “Something went wrong. Please try again.”) and optionally log the real error server-side.
+
+## Async and loading states
+
+- Prefer **async/await** over raw Promises for readability.
+- For any **user-facing** async operation (login, signup, profile update, avatar upload), handle:
+  - **Loading:** Disable submit button or show a spinner so the user knows the action is in progress.
+  - **Error:** Show an error message (from the rules above) and allow retry or correction.
+  - **Success:** Redirect or update UI (e.g. show success toast or updated profile).
+
+Avoid leaving the user with no feedback while a request is in flight or after it fails.

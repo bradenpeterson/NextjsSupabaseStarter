@@ -1,0 +1,48 @@
+---
+description: Setup script, environment, deployment, and GitHub Actions for migrations
+globs: setup.sh, setup.js, .github/workflows/*.yml, README.md
+alwaysApply: false
+---
+
+# Setup Script, Environment, Deployment, and CI/CD
+
+## Setup script (e.g. `setup.sh` or `setup.js`)
+
+The script automates full project setup. It should assume the **`supabase/`** directory already exists (migrations and schemas are in place); it does **not** run `supabase init`.
+
+**Steps (in order):**
+
+1. **Install dependencies:** Run `npm install` (or equivalent).
+2. **Start Supabase:** Run `npx supabase start`. If Supabase is already running, detect and skip or report “already running” instead of failing.
+3. **Extract credentials:** Parse the output of `supabase start` (or `supabase status`) to get the **API URL** and **anon key**.
+4. **Environment file:** Create or update **`.env.local`** with:
+   - `NEXT_PUBLIC_SUPABASE_URL=<API URL>`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>`
+   If `.env.local` exists, overwrite or update these two variables so they match the running local instance.
+5. **Migrations:** Run **`npx supabase db reset`** (to apply all migrations from scratch) or **`npx supabase migration up`** so the local DB matches the migrations.
+6. **Output:** Print clear success message and next steps (e.g. “Run `npm run dev` to start the app”).
+
+**Requirements:**
+
+- **Idempotent:** Safe to run multiple times (e.g. “already running” and “env already has keys” do not cause failure).
+- **Error handling:** If a step fails, print a helpful message and exit with a non-zero code. Do not continue if `supabase start` or migrations fail.
+- **README:** Document how to run the script (e.g. `chmod +x setup.sh && ./setup.sh` or `node setup.js`). Mention prerequisites (Node, Docker for Supabase).
+
+Implement in **bash** (`setup.sh`) or **Node.js** (`setup.js`); if using Node, parsing and file writes are straightforward and cross-platform.
+
+## Deployment (README)
+
+Document in README:
+
+- **Production Supabase:** Create a Supabase project for production; get project URL and anon key (and service role if needed for migrations or admin).
+- **Hosting (e.g. Vercel/Netlify):** Set **environment variables** in the platform UI: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (and any others the app uses).
+- **Linking production DB:** How to run migrations against production (e.g. `supabase link --project-ref <ref>` then `supabase db push` or `supabase migration up`), or that migrations run via GitHub Actions.
+- **Platform notes:** Any platform-specific steps (e.g. Vercel serverless, build env, redirects).
+
+## GitHub Actions: database migrations
+
+- **Workflow file:** Create a workflow under **`.github/workflows/`** (e.g. `migrate.yml`) that runs on push to **main** (or on deployment to production, depending on your branching model).
+- **Steps:** Checkout repo; install or use Supabase CLI; connect to the **production** Supabase project using **GitHub Secrets** (e.g. `SUPABASE_ACCESS_TOKEN`, or project ref + database password). Run pending migrations (e.g. `supabase db push` or `supabase migration up`).
+- **Security:** Never log secrets; use GitHub Secrets for all credentials. Prefer **Supabase access token** or **project ref + DB password** as documented by Supabase for CI.
+- **Failure:** If migrations fail, fail the job with a clear error so the team is notified. Optionally add a summary or artifact with migration output.
+- **README:** Document which secrets are required and how to add them in the repo settings, and how to trigger the workflow (e.g. push to main, or manual dispatch).

@@ -1,0 +1,45 @@
+---
+description: Next.js 13+ App Router, project structure, and routing conventions
+globs: app/**/*.tsx, app/**/*.ts, components/**/*.tsx
+alwaysApply: false
+---
+
+# Next.js App Router and Project Structure
+
+## App Router only
+
+- Use the **App Router**: all routes live in the `app/` directory.
+- Each route segment uses `layout.tsx` (optional), `page.tsx` (required), and optionally `loading.tsx`, `error.tsx`, `not-found.tsx`.
+- Do **not** create or use a `pages/` directory.
+
+## Project structure
+
+- **`app/`** — Route segments, layouts, and route-level UI. Co-locate route-specific components in the segment folder if they are not reused.
+- **`components/`** — Reusable UI (buttons, forms, cards, nav). Document in README where shared vs route-specific components live.
+- **`lib/`** — Supabase client factories, auth helpers, and pure utilities. No React components here.
+- **`hooks/`** — Custom hooks (e.g. `useAuth`, `useUser`). Keep naming consistent and document in README.
+
+Keep the structure organized and document the conventions in README so the starter is easy to extend.
+
+## Server vs client components
+
+- **Default to Server Components:** No `"use client"` unless the component needs hooks, browser APIs, or user interactivity.
+- **Data fetching:** Prefer async Server Components (e.g. async `page.tsx`) or server actions. Do not fetch in client components when the data can be loaded on the server.
+- **Client components:** Use for forms, auth state UI (e.g. “Sign out” button), and any component that uses `useState`, `useEffect`, or event handlers that must run in the browser.
+- **Boundary:** Add `"use client"` at the top of the file only for the component that needs client features; keep parents as Server Components when possible.
+
+## Styling
+
+- Use **Tailwind CSS** via `className`. The project already has Tailwind configured.
+- Optionally use **CSS modules** (e.g. `Component.module.css`) for component-scoped styles if needed.
+- Keep styling approach consistent and document in README if you introduce a second approach.
+
+## Routes to implement
+
+- **`/`** — Home: welcome message, auth status, link to login/signup when logged out, link to dashboard when logged in.
+- **`/login`** — Email/password login form; redirect to dashboard on success.
+- **`/signup`** — Email/password signup form; redirect to dashboard on success.
+- **`/dashboard`** — Protected: require auth; show user info, link to profile, sign-out button; redirect to `/login` if not authenticated.
+- **`/profile`** — Protected: require auth; show and edit profile including avatar; redirect to `/login` if not authenticated.
+
+Use Next.js `redirect()` from `next/navigation` for auth redirects. Perform auth checks in the **server** (layout or page), not only in the client, so protected content is never sent to unauthenticated users.

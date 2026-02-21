@@ -1,0 +1,46 @@
+---
+description: Authentication flows and consistent patterns for server and client
+globs: "**/*.ts, **/*.tsx"
+alwaysApply: false
+---
+
+# Authentication Patterns
+
+Implement one clear, consistent pattern for “current user” on server and one on client. Document both in README under “Authentication flow” or “Authentication patterns”.
+
+## Sign up / Sign in / Sign out
+
+- **Sign up:** Use `supabase.auth.signUp({ email, password })`. Handle errors (e.g. email already registered, weak password); show messages in UI; on success redirect to dashboard.
+- **Sign in:** Use `supabase.auth.signInWithPassword({ email, password })`. On success redirect to dashboard; on failure show a clear error (e.g. “Invalid credentials”).
+- **Sign out:** Use `supabase.auth.signOut()`. Then redirect to home or login. In Server Components or server actions, use the server client; in Client Components use the client from `lib/supabase/client.ts`.
+
+Never leave errors unhandled; map Supabase auth error codes to user-friendly messages.
+
+## Server-side auth
+
+- Provide a helper such as **`getUser()`** or **`getSession()`** that:
+  - Uses the **server** Supabase client (from `lib/supabase/server.ts`).
+  - Returns the current user (or session).
+- Use this in Server Components and in server actions that need the current user.
+- On **protected routes** (e.g. `/dashboard`, `/profile`), call this helper at the start of the layout or page; if the user is null, call `redirect('/login')` and do not render protected content.
+
+## Client-side auth
+
+- Provide a hook such as **`useAuth()`** or **`useUser()`** that returns at least:
+  - `user` (or null),
+  - `loading` (boolean),
+  - and optionally `signOut` or similar.
+- Use the **browser** Supabase client inside the hook. Subscribe to auth state changes (e.g. `onAuthStateChange`) so the UI updates when the user signs in or out.
+- Use this hook in Client Components for nav, dashboard, and profile UI (e.g. “Sign out” button, “Welcome, {email}”).
+
+## Protected routes
+
+- **Enforce on the server:** In the layout or page of `/dashboard` and `/profile`, get the user with the server helper; if null, call `redirect('/login')` immediately.
+- Do **not** rely only on client-side checks to hide sensitive content — the server must not send protected markup or data to unauthenticated users.
+- Optionally use middleware to redirect unauthenticated users away from certain pathnames; the definitive check should still be in the layout/page so RLS and data fetching are correct.
+
+## Consistency
+
+- Use the same server helper everywhere for “get current user” on the server.
+- Use the same client hook everywhere for “current user” in the client.
+- Document in README: how to get the user in a Server Component, in a server action, and in a Client Component, and how protected routes are implemented.

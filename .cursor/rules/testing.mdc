@@ -1,0 +1,44 @@
+---
+description: Unit testing setup and patterns (Jest/Vitest, components, utils, auth)
+globs: "**/*.test.ts, **/*.test.tsx, **/*.spec.ts, **/jest.config.*, **/vitest.config.*, **/setupTests.*"
+alwaysApply: false
+---
+
+# Unit Testing
+
+## Framework
+
+- Use one of **Jest**, **Vitest**, or **React Testing Library** (RTL is typically used with Jest or Vitest for component tests).
+- Configure for **TypeScript** (ts-node, ts-jest, or Vitest’s built-in TS support) and for **Next.js** (e.g. module path aliases like `@/`, env vars, and optional next/jest or similar if needed).
+- Add an npm script (e.g. **`npm test`** or **`pnpm test`**) to run the test suite.
+
+## Example tests to include
+
+1. **React component test**
+   - Render a simple component (e.g. a button or a small form).
+   - Assert on visible text, presence of elements, or user interactions (e.g. click and expect a callback or state change).
+   - Use React Testing Library’s `render`, `screen`, `userEvent` (or `fireEvent`) and avoid testing implementation details.
+
+2. **Utility function test**
+   - Test a pure helper (e.g. formatter, validator, or a small auth-related util that does not call Supabase).
+   - Assert on return values or thrown errors for given inputs.
+   - Keep tests fast and free of I/O.
+
+3. **Auth-related test**
+   - Example: test that a protected route or component redirects or shows login when the user is unauthenticated (mock the auth helper or Supabase client to return null).
+   - Or: test that a server helper returns the mocked user when the client is mocked.
+   - **Mock** the Supabase client or auth layer so tests do not hit the real API; use Jest `jest.mock()` or Vitest `vi.mock()`.
+
+## Mocking Supabase
+
+- For unit tests, mock `@/lib/supabase/client` and/or `@/lib/supabase/server` (or your actual paths) so that `getUser`, `signIn`, etc. return controlled values.
+- Do not require a real Supabase instance for unit tests; use mocks and optional e2e for full integration.
+
+## README
+
+Document in README:
+
+- How to **run tests** (`npm test` or `pnpm test`).
+- **Where tests live** (e.g. next to source as `*.test.ts(x)` or in a `__tests__` folder).
+- How to **add new tests** (same pattern as examples: component, util, or auth with mocks).
+- That **Supabase is mocked** in unit tests and how (briefly) so contributors know not to rely on real credentials in CI.

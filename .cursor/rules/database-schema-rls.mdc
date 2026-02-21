@@ -1,0 +1,78 @@
+---
+description: Declarative schemas, migrations, RLS, and triggers (profiles + auto-creation)
+globs: supabase/**/*.sql, supabase/schemas/**/*
+alwaysApply: false
+---
+
+# Database: Declarative Schemas, Migrations, RLS, and Triggers
+
+## Declarative schema for profiles
+
+- Define the **profiles** table in **`supabase/schemas/profiles.sql`** (or similar path under `supabase/schemas/`).
+- Table must include:
+  - **`id`** — `uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE`
+  - **`email`** — from auth at signup (e.g. `text`)
+  - **`full_name`** — optional, e.g. `text`
+  - **`avatar_url`** — optional, e.g. `text` (URL from storage)
+  - **`updated_at`** — `timestamptz`, set automatically on UPDATE via a trigger
+- Use a **trigger** on the profiles table to set `updated_at = now()` (or `clock_timestamp()`) on BEFORE UPDATE so it is always current.
+
+## Migrations
+
+- **Generate** migrations from the declarative schema using **`npx supabase db diff`** (with a clean baseline or by applying schema to local DB then diffing). Do not manually run one-off SQL for schema changes.
+- All schema and RLS changes live in **migration files** under **`supabase/migrations/`**. Name migrations with a timestamp or sequential prefix (e.g. `20240101000000_create_profiles.sql`).
+- Never apply schema changes by hand in the SQL editor for anything that should be version-controlled; put it in a migration.
+
+## Automatic profile creation (trigger)
+
+- Create a **PostgreSQL function** that:
+  - Fires **AFTER INSERT** on **`auth.users`**.
+  - Inserts one row into **`public.profiles`** with:
+    - `id = NEW.id`
+    - `email = NEW.email` (or from `NEW.raw_user_meta_data` if preferred)
+    - Other columns with sensible defaults (e.g. `full_name = NULL`, `avatar_url = NULL`, `updated_at = now()`).
+- Create a **trigger** on `auth.users` that calls this function after insert.
+- Put the function and trigger in a **migration** (can be the same migration as the profiles table or a separate one, depending on how you generate diffs).
+
+Example pattern:
+
+```sql
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name, avatar_url, updated_at)
+  VALUES (NEW.id, NEW.email, NULL, NULL, now());
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+```
+
+## Row Level Security (RLS)
+
+- **Enable RLS** on **`public.profiles`**: `ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;`
+- Create policies so that:
+  - **SELECT:** Users can read only their own row: `auth.uid() = id`.
+  - **UPDATE:** Users can update only their own row: `auth.uid() = id`.
+  - **INSERT:** Users can insert only their own row: `auth.uid() = id` (safety; the trigger usually does the insert, but this keeps policy set consistent).
+- Do **not** create any policy that allows reading or modifying another user’s profile. No `SELECT *` or broad `USING` that ignores `auth.uid()`.
+
+Example policies:
+
+```sql
+CREATE POLICY "Users can read own profile" ON public.profiles
+  FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile" ON public.profiles
+  FOR UPDATE USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert own profile" ON public.profiles
+  FOR INSERT WITH CHECK (auth.uid() = id);
+```
+
+## TypeScript types
+
+- Optionally generate or hand-write TypeScript types for the `profiles` table (e.g. `Database` or `Profile` type) and use them in app code when querying or updating profiles.

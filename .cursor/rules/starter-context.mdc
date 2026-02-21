@@ -1,0 +1,31 @@
+---
+description: Global context for Next.js + Supabase starter assignment
+alwaysApply: true
+---
+
+# Next.js + Supabase Starter — Project Context
+
+This project is a **reusable starter application** (boilerplate/template) that integrates Next.js with Supabase. It serves as a foundation for future projects and must provide authentication, user profiles, and proper database security out of the box.
+
+## Stack
+
+- **Next.js 16+** with App Router (no `pages/` directory)
+- **TypeScript** for type safety throughout
+- **Supabase** — CLI for local dev and migrations; `@supabase/ssr` for server and client
+- **Tailwind CSS** for styling (already in project)
+
+## Non-negotiable constraints
+
+- **App Router only:** All routes live under `app/`; use `layout.tsx`, `page.tsx`, `loading.tsx`, `error.tsx`.
+- **Database:** All schema and RLS changes go in **migration files** under `supabase/migrations/`. No manual SQL execution for schema.
+- **Declarative schemas:** Define tables (e.g. `profiles`) in `supabase/schemas/*.sql`; generate migrations with `npx supabase db diff`.
+- **Setup script:** Must be **idempotent** (safe to run multiple times); handle “Supabase already running” and existing `.env.local`.
+- **Naming:** Route names, component names, and hook names (e.g. `/profile` vs `/account`, `useAuth` vs `useUser`) are flexible but must be **consistent** and **documented in README**.
+
+## Documentation reminders
+
+In README.md, explicitly document:
+
+- **Authentication patterns:** How to get the current user on server (e.g. `getUser()`) and client (e.g. `useAuth()`), and how protected routes work.
+- **Code organization:** Where components, hooks, lib utilities, and Supabase clients live; any other architectural decisions.
+- **Conventions:** Naming and structure so anyone using this starter understands the codebase.

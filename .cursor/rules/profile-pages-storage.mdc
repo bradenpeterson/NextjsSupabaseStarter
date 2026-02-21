@@ -1,0 +1,34 @@
+---
+description: Profile and dashboard pages plus avatar upload (Supabase Storage)
+globs: app/**/profile/**/*.tsx, app/**/dashboard/**/*.tsx, app/**/login/**/*.tsx, app/**/signup/**/*.tsx
+alwaysApply: false
+---
+
+# Profile, Dashboard, and Avatar Upload
+
+## Dashboard (protected)
+
+- **Auth:** Require authentication in the server (e.g. in layout or page); redirect to `/login` if not authenticated.
+- **Content:** Display user information (e.g. email, name); link to the profile page; provide a **Sign out** button (client component that calls sign out then redirects).
+- Keep the page simple and focused on “post-login home” and navigation to profile.
+
+## Profile page (protected)
+
+- **Auth:** Require authentication; redirect to `/login` if not authenticated.
+- **Display:** Show current profile (e.g. `full_name`, `avatar_url`, email). Load profile in a Server Component or server action using the server Supabase client; RLS will restrict to the current user’s row.
+- **Form:** Provide a form to update profile fields (at least **`full_name`**; add any other editable columns you defined). On submit, update `public.profiles` via the Supabase client (server action preferred; otherwise client with RLS). Show loading and success/error states.
+- **Validation:** Validate input (e.g. length, allowed characters); return clear error messages on failure.
+
+## Avatar upload
+
+- **UI:** Allow the user to choose an image file (input type file or drag-and-drop). Restrict to image types (e.g. image/jpeg, image/png) and optionally enforce a max file size.
+- **Storage:** Use **Supabase Storage** (e.g. a bucket named `avatars`). Upload the file with a path that includes the user id (e.g. `{userId}/avatar` or `{userId}/{filename}`) so each user’s files are isolated. Create the bucket and set policies so users can read/write only their own path (e.g. `auth.uid()::text` in path).
+- **Profile update:** After a successful upload, get the **public URL** for the object and update **`profiles.avatar_url`** with that URL. Then refetch or revalidate so the UI shows the new avatar.
+- **Display:** Render the current avatar (from `profiles.avatar_url`) with a fallback (e.g. initials or placeholder) when no URL is set.
+- **Errors:** Handle and surface: unsupported file type, file too large, upload failure, and profile update failure. Do not leave the user with no feedback.
+
+## Forms and errors
+
+- Prefer **server actions** for form submission when possible (e.g. update profile). Use `useFormState` or similar for loading and error handling.
+- Always show **loading** state during submit and **error** state with a clear message when something fails (auth, validation, or server/DB error).
+- For client-side submit, use the browser Supabase client; RLS will enforce that only the current user’s profile is updated.
