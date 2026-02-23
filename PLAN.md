@@ -220,8 +220,8 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 8.2 Supabase Storage bucket
 
-- [ ] Create a storage bucket (e.g. `avatars`) in Supabase. This can be done via migration (SQL) or via Supabase Studio/dashboard; if via migration, document the SQL or use Supabase’s storage schema.
-- [ ] Set storage policies so that users can read and write only their own path (e.g. path prefix or pattern using `auth.uid()::text`). Do not allow users to read or overwrite other users’ files.
+- [x] Create a storage bucket (e.g. `avatars`) in Supabase. This can be done via migration (SQL) or via Supabase Studio/dashboard; if via migration, document the SQL or use Supabase’s storage schema.
+- [x] Set storage policies so that users can read and write only their own path (e.g. path prefix or pattern using `auth.uid()::text`). Do not allow users to read or overwrite other users’ files.
 
 ### 8.3 Avatar upload UI and logic
 

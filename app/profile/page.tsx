@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { ProfileNameForm } from "./ProfileNameForm";
+import { AvatarUpload } from "./AvatarUpload";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -32,30 +33,37 @@ export default async function ProfilePage() {
           Profile
         </h1>
 
-        <div className="flex items-center gap-4">
-          {avatarUrl ? (
-            <Image
-              src={avatarUrl}
-              alt="Avatar"
-              width={64}
-              height={64}
-              className="h-16 w-16 rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-200 text-lg font-semibold text-zinc-600 dark:bg-zinc-700 dark:text-zinc-200">
-              {displayName.charAt(0).toUpperCase()}
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="Avatar"
+                width={64}
+                height={64}
+                loading="eager"
+                className="h-16 w-16 rounded-full object-cover"
+              />
+            ) : (
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-200 text-lg font-semibold text-zinc-600 dark:bg-zinc-700 dark:text-zinc-200">
+                {displayName.charAt(0).toUpperCase()}
+              </div>
+            )}
+
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                {displayName}
+              </p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                {email}
+              </p>
             </div>
-          )}
-
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
-              {displayName}
-            </p>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">{email}</p>
           </div>
-        </div>
 
-        <ProfileNameForm initialFullName={fullName} />
+          <AvatarUpload />
+
+          <ProfileNameForm initialFullName={fullName} />
+        </div>
 
         <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
           <Link
