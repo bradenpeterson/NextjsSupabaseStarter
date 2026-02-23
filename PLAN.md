@@ -167,29 +167,29 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 6.1 Home page
 
-- [ ] Update `app/page.tsx`: show a welcome message; display authentication status (logged in vs not).
-- [ ] If not authenticated: show links to login and signup.
-- [ ] If authenticated: show link to dashboard (and optionally profile). Use the server auth helper to get the user (do not rely only on client state for initial render).
+- [x] Update `app/page.tsx`: show a welcome message; display authentication status (logged in vs not).
+- [x] If not authenticated: show links to login and signup.
+- [x] If authenticated: show link to dashboard (and optionally profile). Use the server auth helper to get the user (do not rely only on client state for initial render).
 
 ### 6.2 Login page
 
-- [ ] Create `app/login/page.tsx` (or `app/auth/login/page.tsx` if you prefer that structure; keep consistent).
-- [ ] Implement an email + password form. Use a server action or client-side call to `signInWithPassword`.
-- [ ] On success: `redirect('/dashboard')` (or your dashboard path).
-- [ ] On error: display a user-friendly message (e.g. “Invalid email or password”). Map Supabase error codes to clear messages; do not expose raw errors.
-- [ ] Add a link to the signup page.
+- [x] Create `app/login/page.tsx` (or `app/auth/login/page.tsx` if you prefer that structure; keep consistent).
+- [x] Implement an email + password form. Use a server action or client-side call to `signInWithPassword`.
+- [x] On success: `redirect('/dashboard')` (or your dashboard path).
+- [x] On error: display a user-friendly message (e.g. “Invalid email or password”). Map Supabase error codes to clear messages; do not expose raw errors.
+- [x] Add a link to the signup page.
 
 ### 6.3 Signup page
 
-- [ ] Create `app/signup/page.tsx` (or `app/auth/signup/page.tsx`).
-- [ ] Implement an email + password form. Use `signUp` from Supabase.
-- [ ] On success: `redirect('/dashboard')`.
-- [ ] On error: display a user-friendly message (e.g. “Email already registered” or “Password too weak”). Map Supabase errors appropriately.
-- [ ] Add a link to the login page.
+- [x] Create `app/signup/page.tsx` (or `app/auth/signup/page.tsx`).
+- [x] Implement an email + password form. Use `signUp` from Supabase.
+- [x] On success: `redirect('/dashboard')`.
+- [x] On error: display a user-friendly message (e.g. “Email already registered” or “Password too weak”). Map Supabase errors appropriately.
+- [x] Add a link to the login page.
 
 ### 6.4 Error handling
 
-- [ ] Ensure all auth forms handle loading state (disable submit or show spinner) and error state (show message). Never leave catch blocks empty; log or surface errors appropriately.
+- [x] Ensure all auth forms handle loading state (disable submit or show spinner) and error state (show message). Never leave catch blocks empty; log or surface errors appropriately.
 
 ---
 
