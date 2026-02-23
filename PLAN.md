@@ -214,9 +214,9 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 8.1 Profile update form
 
-- [ ] On the profile page, add a form to edit `full_name` (and any other editable fields you added to the profile model).
-- [ ] On submit: update `public.profiles` via a server action or client Supabase call. RLS will ensure only the current user’s row is updated.
-- [ ] Show loading state during submit and success/error messages. Validate input (e.g. length) and return clear errors.
+- [x] On the profile page, add a form to edit `full_name` (and any other editable fields you added to the profile model).
+- [x] On submit: update `public.profiles` via a server action or client Supabase call. RLS will ensure only the current user’s row is updated.
+- [x] Show loading state during submit and success/error messages. Validate input (e.g. length) and return clear errors.
 
 ### 8.2 Supabase Storage bucket
 

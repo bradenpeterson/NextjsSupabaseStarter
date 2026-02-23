@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { ProfileNameForm } from "./ProfileNameForm";
 
 export default async function ProfilePage() {
   const user = await getUser();
@@ -42,7 +43,7 @@ export default async function ProfilePage() {
             />
           ) : (
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-200 text-lg font-semibold text-zinc-600 dark:bg-zinc-700 dark:text-zinc-200">
-              {fullName ? fullName.charAt(0).toUpperCase() : email.charAt(0).toUpperCase()}
+              {displayName.charAt(0).toUpperCase()}
             </div>
           )}
 
@@ -53,6 +54,8 @@ export default async function ProfilePage() {
             <p className="text-sm text-zinc-600 dark:text-zinc-400">{email}</p>
           </div>
         </div>
+
+        <ProfileNameForm initialFullName={fullName} />
 
         <div className="flex justify-between text-sm text-zinc-600 dark:text-zinc-400">
           <Link
