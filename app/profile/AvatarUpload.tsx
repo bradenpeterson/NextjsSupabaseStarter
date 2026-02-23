@@ -4,6 +4,20 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+// Optional client-side max size in bytes; 0 = no limit (configure per project if needed)
+const MAX_AVATAR_SIZE_BYTES = 0;
+
+const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+];
+
+function isAllowedImageType(type: string): boolean {
+  return ALLOWED_IMAGE_TYPES.includes(type);
+}
+
 export function AvatarUpload() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,8 +32,14 @@ export function AvatarUpload() {
     setError(null);
     setSuccess(null);
 
-    if (!file.type.startsWith("image/")) {
-      setError("Please choose an image file.");
+    if (!file.type || !isAllowedImageType(file.type)) {
+      setError("Unsupported file type. Please use JPEG, PNG, GIF, or WebP.");
+      return;
+    }
+
+    if (MAX_AVATAR_SIZE_BYTES > 0 && file.size > MAX_AVATAR_SIZE_BYTES) {
+      const maxMb = Math.round(MAX_AVATAR_SIZE_BYTES / 1024 / 1024);
+      setError(`Image is too large. Maximum size is ${maxMb} MB.`);
       return;
     }
 
@@ -50,7 +70,12 @@ export function AvatarUpload() {
 
       if (uploadError) {
         console.error("Error uploading avatar:", uploadError);
-        setError("Could not upload avatar. Please try again.");
+        const msg = uploadError.message?.toLowerCase() ?? "";
+        if (msg.includes("size") || msg.includes("limit") || msg.includes("too large")) {
+          setError("File is too large. Please choose a smaller image.");
+        } else {
+          setError("Upload failed. Please try again.");
+        }
         return;
       }
 
@@ -68,7 +93,7 @@ export function AvatarUpload() {
 
       if (updateError) {
         console.error("Error updating avatar URL on profile:", updateError);
-        setError("Could not save avatar. Please try again.");
+        setError("Avatar uploaded but could not update profile. Please try again.");
         return;
       }
 
@@ -100,7 +125,7 @@ export function AvatarUpload() {
           id="avatar-upload"
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/gif,image/webp"
           onChange={handleFileChange}
           disabled={uploading}
           className="block w-full text-sm text-zinc-700 file:mr-3 file:rounded-md file:border-0 file:bg-zinc-900 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:bg-zinc-800 disabled:opacity-50 dark:text-zinc-200 dark:file:bg-zinc-100 dark:file:text-zinc-900 dark:hover:file:bg-zinc-200"

@@ -225,14 +225,14 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 8.3 Avatar upload UI and logic
 
-- [ ] On the profile page, add an avatar section: file input (accept image types; optionally enforce max file size).
-- [ ] On file select: upload the file to the avatars bucket with a path like `{userId}/avatar` or `{userId}/{filename}`. Get the public URL after upload.
-- [ ] Update `profiles.avatar_url` with that URL (via server action or client). Refetch or revalidate so the UI shows the new avatar.
-- [ ] Display the current avatar (from `profiles.avatar_url`) with a fallback (e.g. initials or placeholder) when no URL is set.
+- [x] On the profile page, add an avatar section: file input (accept image types; optionally enforce max file size).
+- [x] On file select: upload the file to the avatars bucket with a path like `{userId}/avatar` or `{userId}/{filename}`. Get the public URL after upload.
+- [x] Update `profiles.avatar_url` with that URL (via server action or client). Refetch or revalidate so the UI shows the new avatar.
+- [x] Display the current avatar (from `profiles.avatar_url`) with a fallback (e.g. initials or placeholder) when no URL is set.
 
 ### 8.4 Avatar error handling
 
-- [ ] Handle and surface: unsupported file type, file too large, upload failure, and profile update failure. Do not leave the user without feedback.
+- [x] Handle and surface: unsupported file type, file too large, upload failure, and profile update failure. Do not leave the user without feedback.
 
 ---
 
@@ -240,8 +240,8 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 9.1 Create the script
 
-- [ ] Create `setup.sh` (bash) or `setup.js` (Node.js) at the project root. Choose one; document in README.
-- [ ] Implement in order:
+- [x] Create `setup.sh` (bash) or `setup.js` (Node.js) at the project root. Choose one; document in README.
+- [x] Implement in order:
   1. Run `npm install`. On failure, print error and exit with non-zero code.
   2. Run `npx supabase start`. If Supabase is already running (detect from output or `supabase status`), do not fail — print a message and continue.
   3. Extract the API URL and anon key from the output of `supabase start` or `supabase status` (parse the printed table or JSON).
@@ -251,13 +251,13 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 9.2 Idempotency and errors
 
-- [ ] Script is idempotent: safe to run multiple times (already running Supabase and existing `.env.local` are handled).
-- [ ] On any step failure, print a helpful error message and exit with a non-zero code. Do not continue if `supabase start` or migrations fail.
-- [ ] If using bash, make the script executable: `chmod +x setup.sh`.
+- [x] Script is idempotent: safe to run multiple times (already running Supabase and existing `.env.local` are handled).
+- [x] On any step failure, print a helpful error message and exit with a non-zero code. Do not continue if `supabase start` or migrations fail.
+- [x] If using bash, make the script executable: `chmod +x setup.sh`.
 
 ### 9.3 README instructions
 
-- [ ] In README (Phase 12), add a “Quick start” section: how to run the setup script (e.g. `./setup.sh` or `node setup.js`), and note prerequisites (Node, Docker).
+- [x] In README (Phase 12), add a “Quick start” section: how to run the setup script (e.g. `./setup.sh` or `node setup.js`), and note prerequisites (Node, Docker).
 
 ---
 
