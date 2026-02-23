@@ -16,6 +16,7 @@ function getSignUpErrorMessage(message: string): string {
 }
 
 export default function SignupPage() {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,18 +26,38 @@ export default function SignupPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+
+    const trimmedName = fullName.trim();
+    if (!trimmedName) {
+      setError("Please enter your full name.");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const supabase = createClient();
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: { full_name: trimmedName },
+        },
       });
 
       if (signUpError) {
         setError(getSignUpErrorMessage(signUpError.message));
         return;
+      }
+
+      if (data?.user) {
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({ full_name: trimmedName })
+          .eq("id", data.user.id);
+        if (updateError) {
+          console.error("Error updating profile name:", updateError);
+        }
       }
 
       router.push("/dashboard");
@@ -62,6 +83,25 @@ export default function SignupPage() {
               {error}
             </p>
           )}
+
+          <div>
+            <label
+              htmlFor="fullName"
+              className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+            >
+              Full name
+            </label>
+            <input
+              id="fullName"
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+              autoComplete="name"
+              className="w-full rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 placeholder-zinc-500 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-400"
+              placeholder="Your name"
+            />
+          </div>
 
           <div>
             <label

@@ -197,16 +197,16 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 7.1 Dashboard page
 
-- [ ] Create `app/dashboard/page.tsx` (or under a route group like `app/(protected)/dashboard/page.tsx`).
-- [ ] At the top of the page (or in a shared layout), get the current user via the server auth helper. If user is null, call `redirect('/login')` and do not render dashboard content.
-- [ ] Display user information (e.g. email). Add a link to the profile page. Add a sign-out button (use a client component that calls `signOut` and then redirects to home or login).
+- [x] Create `app/dashboard/page.tsx` (or under a route group like `app/(protected)/dashboard/page.tsx`).
+- [x] At the top of the page (or in a shared layout), get the current user via the server auth helper. If user is null, call `redirect('/login')` and do not render dashboard content.
+- [x] Display user information (e.g. email). Add a link to the profile page. Add a sign-out button (use a client component that calls `signOut` and then redirects to home or login).
 
 ### 7.2 Profile page (initial)
 
-- [ ] Create `app/profile/page.tsx` (or `app/(protected)/profile/page.tsx`).
-- [ ] Same auth check: get user via server helper; if null, `redirect('/login')`.
-- [ ] Fetch the current user’s profile from `public.profiles` using the server Supabase client (RLS will restrict to one row). Display current profile data (e.g. email, full_name, avatar_url if present).
-- [ ] Optionally use a shared layout for dashboard and profile that performs the auth check once (e.g. `app/(protected)/layout.tsx`).
+- [x] Create `app/profile/page.tsx` (or `app/(protected)/profile/page.tsx`).
+- [x] Same auth check: get user via server helper; if null, `redirect('/login')`.
+- [x] Fetch the current user’s profile from `public.profiles` using the server Supabase client (RLS will restrict to one row). Display current profile data (e.g. email, full_name, avatar_url if present).
+- [x] Optionally use a shared layout for dashboard and profile that performs the auth check once (e.g. `app/(protected)/layout.tsx`).
 
 ---
 
