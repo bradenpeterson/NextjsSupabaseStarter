@@ -145,21 +145,21 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 5.1 Server-side auth helper
 
-- [ ] In `lib/` (e.g. `lib/auth.ts` or alongside Supabase helpers), implement a function such as `getUser()` or `getSession()`.
-- [ ] The function creates the server Supabase client (from `lib/supabase/server.ts`), then calls `supabase.auth.getUser()` (or `getSession()`), and returns the user (or null/session).
-- [ ] Use this helper in Server Components and server actions whenever the current user is needed. Use it in protected routes to redirect if user is null.
+- [x] In `lib/` (e.g. `lib/auth.ts` or alongside Supabase helpers), implement a function such as `getUser()` or `getSession()`.
+- [x] The function creates the server Supabase client (from `lib/supabase/server.ts`), then calls `supabase.auth.getUser()` (or `getSession()`), and returns the user (or null/session).
+- [x] Use this helper in Server Components and server actions whenever the current user is needed. Use it in protected routes to redirect if user is null.
 
 ### 5.2 Client-side auth hook
 
-- [ ] In `hooks/`, create a hook (e.g. `useAuth.ts` or `useUser.ts`) that:
+- [x] In `hooks/`, create a hook (e.g. `useAuth.ts` or `useUser.ts`) that:
   - Uses the browser Supabase client from `lib/supabase/client.ts`.
   - Subscribes to auth state changes (e.g. `onAuthStateChange`) and updates local state.
   - Returns an object such as `{ user, loading, signOut }` (or equivalent).
-- [ ] Use this hook in Client Components for nav, dashboard, and profile (e.g. sign-out button, display email).
+- [x] Use this hook in Client Components for nav, dashboard, and profile (e.g. sign-out button, display email).
 
 ### 5.3 Documentation reminder
 
-- [ ] In README (Phase 12), document: (1) how to get the current user in a Server Component or server action, (2) how to get the current user in a Client Component (the hook), (3) how protected routes are implemented (server-side check + redirect).
+- [x] In README (Phase 12), document: (1) how to get the current user in a Server Component or server action, (2) how to get the current user in a Client Component (the hook), (3) how protected routes are implemented (server-side check + redirect).
 
 ---
 
