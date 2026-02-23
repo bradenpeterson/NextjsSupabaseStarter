@@ -8,16 +8,16 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 1.1 Prerequisites (verify before starting)
 
-- [ ] **Node.js** — Use a current LTS version (e.g. 18.x or 20.x). Check with `node -v`.
-- [ ] **Docker** — Required for local Supabase. Install Docker Desktop (or equivalent) and ensure it is running for `supabase start`.
-- [ ] **Git** — For version control and GitHub Actions. Check with `git --version`.
-- [ ] **npm** (or pnpm/yarn) — Comes with Node. Check with `npm -v`.
+- [x] **Node.js** — Use a current LTS version (e.g. 18.x or 20.x). Check with `node -v`.
+- [x] **Docker** — Required for local Supabase. Install Docker Desktop (or equivalent) and ensure it is running for `supabase start`.
+- [x] **Git** — For version control and GitHub Actions. Check with `git --version`.
+- [x] **npm** (or pnpm/yarn) — Comes with Node. Check with `npm -v`.
 
 ### 1.2 What already exists
 
-- [ ] **Next.js 16** — App Router, TypeScript, and Tailwind are configured.
-- [ ] **Project layout** — `app/layout.tsx`, `app/page.tsx`, `app/globals.css`; `package.json` with Next, React, Tailwind, TypeScript, ESLint.
-- [ ] **.gitignore** — Includes `node_modules`, `.next`, `.env*` (so `.env.local` is ignored).
+- [x] **Next.js 16** — App Router, TypeScript, and Tailwind are configured.
+- [x] **Project layout** — `app/layout.tsx`, `app/page.tsx`, `app/globals.css`; `package.json` with Next, React, Tailwind, TypeScript, ESLint.
+- [x] **.gitignore** — Includes `node_modules`, `.next`, `.env*` (so `.env.local` is ignored).
 
 ### 1.3 What does not exist yet
 
@@ -36,27 +36,27 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 2.1 Create folder structure
 
-- [ ] Create `components/` — Reusable UI (buttons, forms, nav, etc.).
-- [ ] Create `lib/` — Supabase clients, auth helpers, and utilities.
-- [ ] Create `hooks/` — Custom hooks (e.g. `useAuth`).
+- [x] Create `components/` — Reusable UI (buttons, forms, nav, etc.).
+- [x] Create `lib/` — Supabase clients, auth helpers, and utilities.
+- [x] Create `hooks/` — Custom hooks (e.g. `useAuth`).
 - [ ] Document this structure in README later (Phase 12).
 
 ### 2.2 Install Supabase packages
 
-- [ ] Run: `npm install @supabase/supabase-js @supabase/ssr`
-- [ ] Confirm both packages are in `dependencies` in `package.json`. Use `@supabase/ssr` for creating server and client instances in Next.js.
+- [x] Run: `npm install @supabase/supabase-js @supabase/ssr`
+- [x] Confirm both packages are in `dependencies` in `package.json`. Use `@supabase/ssr` for creating server and client instances in Next.js.
 
 ### 2.3 Supabase CLI
 
-- [ ] Either: install globally (`npm install -g supabase`) or use via npx (`npx supabase ...`) for all commands. Document the choice in README.
-- [ ] Verify: `npx supabase --version` (or `supabase --version` if global).
+- [x] Either: install globally (`npm install -g supabase`) or use via npx (`npx supabase ...`) for all commands. Document the choice in README.
+- [x] Verify: `npx supabase --version` (or `supabase --version` if global).
 
 ### 2.4 Environment variables and example file
 
-- [ ] Create `.env.local.example` with two placeholders (no real secrets):
+- [x] Create `.env.local.example` with two placeholders (no real secrets):
   - `NEXT_PUBLIC_SUPABASE_URL=your_supabase_url`
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key`
-- [ ] Ensure `.env.local` is in `.gitignore` (already covered by `.env*` in default Next.js .gitignore).
+- [x] Ensure `.env.local` is in `.gitignore` (already covered by `.env*` in default Next.js .gitignore).
 
 ---
 
@@ -64,34 +64,34 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 3.1 Initialize Supabase in the project
 
-- [ ] Run: `npx supabase init`
-- [ ] Confirm `supabase/` directory exists with `config.toml` and (initially empty or default) `migrations/`.
+- [x] Run: `npx supabase init`
+- [x] Confirm `supabase/` directory exists with `config.toml` and (initially empty or default) `migrations/`.
 
 ### 3.2 Server Supabase client
 
-- [ ] Create `lib/supabase/server.ts`.
-- [ ] Use `createServerClient` from `@supabase/ssr`.
-- [ ] Use Next.js `cookies()` from `next/headers` (await in App Router).
-- [ ] Implement cookie helpers: `get(name)`, `set(name, value, options)`, `remove(name, options)` using the cookie store.
-- [ ] Export an async function (e.g. `createClient()`) that returns the server client for the current request. Do not create a global singleton for server use.
+- [x] Create `lib/supabase/server.ts`.
+- [x] Use `createServerClient` from `@supabase/ssr`.
+- [x] Use Next.js `cookies()` from `next/headers` (await in App Router).
+- [x] Implement cookie helpers: `get(name)`, `set(name, value, options)`, `remove(name, options)` using the cookie store.
+- [x] Export an async function (e.g. `createClient()`) that returns the server client for the current request. Do not create a global singleton for server use.
 
 ### 3.3 Browser Supabase client
 
-- [ ] Create `lib/supabase/client.ts`.
-- [ ] Use `createBrowserClient` from `@supabase/ssr` with `process.env.NEXT_PUBLIC_SUPABASE_URL` and `process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-- [ ] Export a single instance (singleton) for use in Client Components. Create once at module load or via lazy singleton.
+- [x] Create `lib/supabase/client.ts`.
+- [x] Use `createBrowserClient` from `@supabase/ssr` with `process.env.NEXT_PUBLIC_SUPABASE_URL` and `process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- [x] Export a single instance (singleton) for use in Client Components. Create once at module load or via lazy singleton.
 
 ### 3.4 Middleware for token refresh
 
-- [ ] Create `middleware.ts` at the **project root** (same level as `app/`).
-- [ ] In middleware: create a Supabase client using the incoming request and response so cookies can be read and written (use `createServerClient` with cookie get/set that operate on the request/response).
-- [ ] Call `supabase.auth.getUser()` (or equivalent) to refresh the session so cookies are updated.
-- [ ] Return the response (e.g. `NextResponse.next()`) so the updated cookies are sent back. This fulfills the assignment’s “proxy” / token refresh requirement.
-- [ ] Ensure middleware does not block static assets or required routes; use `matcher` if needed.
+- [x] Create `proxy.ts` at the **project root** (same level as `app/`). 
+- [x] In proxy: create a Supabase client using the incoming request and response so cookies can be read and written (use `createServerClient` with cookie get/set that operate on the request/response).
+- [x] Call `supabase.auth.getUser()` (or equivalent) to refresh the session so cookies are updated.
+- [x] Return the response (e.g. `NextResponse.next()`) so the updated cookies are sent back. This fulfills the assignment’s “proxy” / token refresh requirement.
+- [x] Ensure middleware does not block static assets or required routes; use `matcher` if needed.
 
 ### 3.5 Environment variables reference
 
-- [ ] In README (Phase 12), document:
+- [x] In README (Phase 12), document:
   - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL (local or production).
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon (public) key.
 
@@ -101,43 +101,43 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 4.1 Declarative schema for profiles
 
-- [ ] Create directory `supabase/schemas/` if it does not exist.
-- [ ] Create `supabase/schemas/profiles.sql`.
-- [ ] Define table `public.profiles` with:
+- [x] Create directory `supabase/schemas/` if it does not exist.
+- [x] Create `supabase/schemas/profiles.sql`.
+- [x] Define table `public.profiles` with:
   - `id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE`
   - `email text` (or `citext`)
   - `full_name text`
   - `avatar_url text`
   - `updated_at timestamptz` (default or set by trigger)
-- [ ] Add a trigger on `public.profiles`: BEFORE UPDATE, set `updated_at = now()` (or `clock_timestamp()`). Define the trigger function and attach it to `profiles`.
+- [x] Add a trigger on `public.profiles`: BEFORE UPDATE, set `updated_at = now()` (or `clock_timestamp()`). Define the trigger function and attach it to `profiles`.
 
 ### 4.2 Generate migration from schema
 
-- [ ] Apply the schema to the local database (e.g. run the SQL manually once, or use Supabase’s workflow for declarative schemas).
-- [ ] Run: `npx supabase db diff -f create_profiles` (or another migration name) to generate a migration file under `supabase/migrations/`.
-- [ ] If your workflow uses a single migration file for the table + trigger + RLS, consolidate so the profiles table, updated_at trigger, handle_new_user trigger, and RLS are all in migrations (see 4.3 and 4.4). Do not run schema changes manually outside migrations.
+- [x] Apply the schema to the local database (e.g. run the SQL manually once, or use Supabase’s workflow for declarative schemas).
+- [x] Run: `npx supabase db diff -f create_profiles` (or another migration name) to generate a migration file under `supabase/migrations/`.
+- [x] If your workflow uses a single migration file for the table + trigger + RLS, consolidate so the profiles table, updated_at trigger, handle_new_user trigger, and RLS are all in migrations (see 4.3 and 4.4). Do not run schema changes manually outside migrations.
 
 ### 4.3 Automatic profile creation trigger
 
-- [ ] Create a migration (new file or add to existing) that defines:
+- [x] Create a migration (new file or add to existing) that defines:
   - A function (e.g. `public.handle_new_user()`) that runs AFTER INSERT on `auth.users`.
   - The function inserts one row into `public.profiles` with: `id = NEW.id`, `email = NEW.email` (or from `NEW.raw_user_meta_data`), and defaults for `full_name`, `avatar_url`, `updated_at`.
   - A trigger on `auth.users`: AFTER INSERT FOR EACH ROW EXECUTE FUNCTION `public.handle_new_user()`.
-- [ ] Use `SECURITY DEFINER` for the function if required so it can insert into `public.profiles` in the auth context.
+- [x] Use `SECURITY DEFINER` for the function if required so it can insert into `public.profiles` in the auth context.
 
 ### 4.4 Row Level Security (RLS)
 
-- [ ] In a migration, enable RLS on `public.profiles`: `ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;`
-- [ ] Add policy: users can SELECT their own row — `USING (auth.uid() = id)`.
-- [ ] Add policy: users can UPDATE their own row — `USING (auth.uid() = id)`.
-- [ ] Add policy: users can INSERT their own row — `WITH CHECK (auth.uid() = id)`.
-- [ ] Ensure there is no policy that allows reading or updating another user’s profile.
+- [x] In a migration, enable RLS on `public.profiles`: `ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;`
+- [x] Add policy: users can SELECT their own row — `USING (auth.uid() = id)`.
+- [x] Add policy: users can UPDATE their own row — `USING (auth.uid() = id)`.
+- [x] Add policy: users can INSERT their own row — `WITH CHECK (auth.uid() = id)`.
+- [x] Ensure there is no policy that allows reading or updating another user’s profile.
 
 ### 4.5 Apply and verify migrations
 
-- [ ] Start Supabase: `npx supabase start`.
-- [ ] Run: `npx supabase db reset` (or `npx supabase migration up`) to apply all migrations.
-- [ ] Verify: `public.profiles` exists; trigger on `auth.users` exists; RLS is enabled and policies are in place (e.g. via Supabase Studio or `psql`).
+- [x] Start Supabase: `npx supabase start`.
+- [x] Run: `npx supabase db reset` (or `npx supabase migration up`) to apply all migrations.
+- [x] Verify: `public.profiles` exists; trigger on `auth.users` exists; RLS is enabled and policies are in place (e.g. via Supabase Studio or `psql`).
 
 ---
 
