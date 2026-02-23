@@ -265,20 +265,20 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 10.1 Create workflow file
 
-- [ ] Create `.github/workflows/` if it does not exist.
-- [ ] Create a workflow file (e.g. `migrate.yml` or `supabase-migrate.yml`).
+- [x] Create `.github/workflows/` if it does not exist.
+- [x] Create a workflow file (e.g. `migrate.yml` or `supabase-migrate.yml`).
 
 ### 10.2 Workflow definition
 
-- [ ] Trigger: on push to `main` (or your production branch), and optionally on workflow_dispatch for manual runs.
-- [ ] Jobs: checkout repository; set up Node if needed; install or use Supabase CLI (e.g. via npm script or direct download).
-- [ ] Connect to the **production** Supabase project using GitHub Secrets (e.g. `SUPABASE_ACCESS_TOKEN`, or `SUPABASE_PROJECT_REF` + `SUPABASE_DB_PASSWORD` or service role key — follow Supabase CI docs).
-- [ ] Run pending migrations: e.g. `supabase link` (if using project ref) then `supabase db push` or `supabase migration up`. Use the secret so the CLI is authenticated.
-- [ ] On migration failure: fail the job and print clear output. Do not log secrets.
+- [x] Trigger: on push to `main` (or your production branch), and optionally on workflow_dispatch for manual runs.
+- [x] Jobs: checkout repository; set up Node if needed; install or use Supabase CLI (e.g. via npm script or direct download).
+- [x] Connect to the **production** Supabase project using GitHub Secrets (e.g. `SUPABASE_ACCESS_TOKEN`, or `SUPABASE_PROJECT_REF` + `SUPABASE_DB_PASSWORD` or service role key — follow Supabase CI docs).
+- [x] Run pending migrations: e.g. `supabase link` (if using project ref) then `supabase db push` or `supabase migration up`. Use the secret so the CLI is authenticated.
+- [x] On migration failure: fail the job and print clear output. Do not log secrets.
 
 ### 10.3 README documentation
 
-- [ ] In README (Phase 12), add a “GitHub Actions” or “CI/CD” section: list required secrets, how to add them in repo Settings → Secrets, and how the workflow is triggered. Explain that it runs migrations against the linked production database.
+- [x] In README (Phase 12), add a “GitHub Actions” or “CI/CD” section: list required secrets, how to add them in repo Settings → Secrets, and how the workflow is triggered. Explain that it runs migrations against the linked production database.
 
 ---
 
