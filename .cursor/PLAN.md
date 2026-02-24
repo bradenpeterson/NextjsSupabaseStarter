@@ -330,16 +330,16 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 13.1 Test setup from scratch
 
-- [ ] Remove `node_modules` and `.env.local`. Do **not** delete the `supabase/` directory (migrations and schemas must remain).
-- [ ] Run the setup script from the project root. It should: install deps, start Supabase (or detect already running), write `.env.local`, run migrations.
-- [ ] Run `npm run dev` and verify: home page loads; can sign up, sign in, see dashboard and profile; can update profile and upload avatar; sign out works. Confirm no console or runtime errors.
+- [x] Remove `node_modules` and `.env.local`. Do **not** delete the `supabase/` directory (migrations and schemas must remain).
+- [x] Run the setup script from the project root. It should: install deps, start Supabase (or detect already running), write `.env.local`, run migrations.
+- [x] Run `npm run dev` and verify: home page loads; can sign up, sign in, see dashboard and profile; can update profile and upload avatar; sign out works. Confirm no console or runtime errors.
 
 ### 13.2 Pre-submission checklist
 
-- [ ] Remove `node_modules` again before creating the zip (per assignment).
-- [ ] Ensure the setup script is included in the repo and is executable (if bash).
-- [ ] Verify README is comprehensive and includes all sections listed in Phase 12.
-- [ ] Zip the project folder and submit as required. Do not include `node_modules` in the zip.
+- [x] Remove `node_modules` again before creating the zip (per assignment).
+- [x] Ensure the setup script is included in the repo and is executable (if bash).
+- [x] Verify README is comprehensive and includes all sections listed in Phase 12.
+- [x] Zip the project folder and submit as required. Do not include `node_modules` in the zip.
 
 ---
 
