@@ -21,14 +21,14 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 1.3 What does not exist yet
 
-- [ ] No `supabase/` directory (migrations, schemas, config).
-- [ ] No `lib/`, `hooks/`, or `components/` folders.
-- [ ] No Supabase client packages or auth/profile code.
-- [ ] No middleware for token refresh.
-- [ ] No login, signup, dashboard, or profile pages.
-- [ ] No setup script or GitHub Actions workflow.
-- [ ] No unit tests or testing config.
-- [ ] README is the default Next.js README (needs full assignment documentation).
+- [x] No `supabase/` directory (migrations, schemas, config).
+- [x] No `lib/`, `hooks/`, or `components/` folders.
+- [x] No Supabase client packages or auth/profile code.
+- [x] No middleware for token refresh.
+- [x] No login, signup, dashboard, or profile pages.
+- [x] No setup script or GitHub Actions workflow.
+- [x] No unit tests or testing config.
+- [x] README is the default Next.js README (needs full assignment documentation).
 
 ---
 
@@ -39,7 +39,7 @@ This document is the step-by-step plan to build the starter application from the
 - [x] Create `components/` — Reusable UI (buttons, forms, nav, etc.).
 - [x] Create `lib/` — Supabase clients, auth helpers, and utilities.
 - [x] Create `hooks/` — Custom hooks (e.g. `useAuth`).
-- [ ] Document this structure in README later (Phase 12).
+- [x] Document this structure in README later (Phase 12).
 
 ### 2.2 Install Supabase packages
 
@@ -307,22 +307,22 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 12.1 Required README sections
 
-- [ ] **Project description and purpose** — Reusable Next.js + Supabase starter; auth, profiles, RLS; use as a base for new projects.
-- [ ] **Prerequisites** — Node.js version, Docker (for local Supabase), Git.
-- [ ] **Quick start** — How to run the setup script; one-command setup and then `npm run dev`.
-- [ ] **Manual setup** — Step-by-step for those who prefer not to use the script: install deps, start Supabase, set `.env.local`, run migrations.
-- [ ] **Project structure** — Where `app/`, `components/`, `lib/`, `hooks/` live and what they contain; where reusable components vs route-specific code go.
-- [ ] **How to use this starter for new projects** — Clone or copy; run setup; change project name/env; add features.
-- [ ] **Environment variables** — `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`; that `.env.local` is not committed.
-- [ ] **Database schema overview** — `public.profiles` table; trigger for new user; RLS; optional diagram or table listing.
-- [ ] **Authentication flow** — How to get current user on server (helper) and client (hook); how protected routes work (server check + redirect).
-- [ ] **Deployment** — Steps to set up production Supabase project; configure env vars on Vercel/Netlify (or chosen host); link production DB; run migrations (manual or via GitHub Action); platform-specific notes.
-- [ ] **GitHub Actions setup** — Required secrets; how to configure the migration workflow; when it runs.
-- [ ] **Troubleshooting** — Common issues (e.g. Docker not running, Supabase already running, migration failures, env vars missing).
+- [x] **Project description and purpose** — Reusable Next.js + Supabase starter; auth, profiles, RLS; use as a base for new projects.
+- [x] **Prerequisites** — Node.js version, Docker (for local Supabase), Git.
+- [x] **Quick start** — How to run the setup script; one-command setup and then `npm run dev`.
+- [x] **Manual setup** — Step-by-step for those who prefer not to use the script: install deps, start Supabase, set `.env.local`, run migrations.
+- [x] **Project structure** — Where `app/`, `components/`, `lib/`, `hooks/` live and what they contain; where reusable components vs route-specific code go.
+- [x] **How to use this starter for new projects** — Clone or copy; run setup; change project name/env; add features.
+- [x] **Environment variables** — `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`; that `.env.local` is not committed.
+- [x] **Database schema overview** — `public.profiles` table; trigger for new user; RLS; optional diagram or table listing.
+- [x] **Authentication flow** — How to get current user on server (helper) and client (hook); how protected routes work (server check + redirect).
+- [x] **Deployment** — Steps to set up production Supabase project; configure env vars on Vercel/Netlify (or chosen host); link production DB; run migrations (manual or via GitHub Action); platform-specific notes.
+- [x] **GitHub Actions setup** — Required secrets; how to configure the migration workflow; when it runs.
+- [x] **Troubleshooting** — Common issues (e.g. Docker not running, Supabase already running, migration failures, env vars missing).
 
 ### 12.2 Code organization and auth patterns
 
-- [ ] Explicitly document: where reusable components (buttons, forms, etc.) are stored; where custom hooks are; how utility functions are organized; and that auth patterns (getUser on server, useAuth on client) are consistent and documented here.
+- [x] Explicitly document: where reusable components (buttons, forms, etc.) are stored; where custom hooks are; how utility functions are organized; and that auth patterns (getUser on server, useAuth on client) are consistent and documented here.
 
 ---
 

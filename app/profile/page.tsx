@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
-import { formatDisplayName } from "@/lib/formatDisplayName";
 import { createClient } from "@/lib/supabase/server";
 import { ProfileNameForm } from "./ProfileNameForm";
 import { AvatarUpload } from "./AvatarUpload";
@@ -25,7 +24,7 @@ export default async function ProfilePage() {
   const email = profile?.email ?? user.email ?? "";
   const fullName = profile?.full_name ?? "";
   const avatarUrl = profile?.avatar_url ?? "";
-  const displayName = formatDisplayName(fullName, email);
+  const displayName = fullName || email.split("@")[0];
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-zinc-50 px-4 font-sans dark:bg-zinc-950">
