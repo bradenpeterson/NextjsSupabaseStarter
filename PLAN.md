@@ -286,20 +286,20 @@ This document is the step-by-step plan to build the starter application from the
 
 ### 11.1 Install and configure test framework
 
-- [ ] Choose one: Jest or Vitest. Add React Testing Library for component tests.
-- [ ] Install dependencies (e.g. `@testing-library/react`, `jest` or `vitest`, and any Jest/Vitest adapters for React and TypeScript).
-- [ ] Add config file: `jest.config.ts`/`jest.config.js` or `vitest.config.ts`. Configure for TypeScript and Next.js (path aliases like `@/`, env vars if needed).
-- [ ] Add npm script: `"test": "jest"` or `"test": "vitest run"` (and optionally `"test:watch": "vitest"`).
+- [x] Choose one: Jest or Vitest. Add React Testing Library for component tests.
+- [x] Install dependencies (e.g. `@testing-library/react`, `jest` or `vitest`, and any Jest/Vitest adapters for React and TypeScript).
+- [x] Add config file: `jest.config.ts`/`jest.config.js` or `vitest.config.ts`. Configure for TypeScript and Next.js (path aliases like `@/`, env vars if needed).
+- [x] Add npm script: `"test": "jest"` or `"test": "vitest run"` (and optionally `"test:watch": "vitest"`).
 
 ### 11.2 Example tests
 
-- [ ] **Component test:** Create a test that renders a simple component (e.g. a button or small form) and asserts on text or user interaction. Use React Testing Library’s `render`, `screen`, and `userEvent` (or `fireEvent`).
-- [ ] **Utility test:** Create a test for a pure utility function (e.g. formatter or validator). Assert on return values or thrown errors.
-- [ ] **Auth-related test:** Create a test that mocks the Supabase client or auth helper (e.g. return null user) and asserts that protected behavior redirects or shows login (or that a helper returns the mocked user). Do not call real Supabase in unit tests.
+- [x] **Component test:** Create a test that renders a simple component (e.g. a button or small form) and asserts on text or user interaction. Use React Testing Library’s `render`, `screen`, and `userEvent` (or `fireEvent`).
+- [x] **Utility test:** Create a test for a pure utility function (e.g. formatter or validator). Assert on return values or thrown errors.
+- [x] **Auth-related test:** Create a test that mocks the Supabase client or auth helper (e.g. return null user) and asserts that protected behavior redirects or shows login (or that a helper returns the mocked user). Do not call real Supabase in unit tests.
 
 ### 11.3 README
 
-- [ ] In README (Phase 12), add a “Testing” section: how to run tests (`npm test`), where tests live (e.g. `__tests__/` or colocated `*.test.tsx`), how to add new tests, and that Supabase is mocked in unit tests.
+- [x] In README (Phase 12), add a “Testing” section: how to run tests (`npm test`), where tests live (e.g. `__tests__/` or colocated `*.test.tsx`), how to add new tests, and that Supabase is mocked in unit tests.
 
 ---
 
